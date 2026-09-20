@@ -48,6 +48,16 @@ export class AgendaComponent implements OnInit, OnDestroy {
     return this.periodOffset === 0 && day === 0 && this.currentMinutes >= 7 * 60 + (index + 1) * 60;
   }
 
+  get visibleDayHours(): Array<{ label: string; index: number }> {
+    return this.hours
+      .map((label, index) => ({ label, index }))
+      .filter((hour) => !this.isPastHour(hour.index) || this.hasBookingInHour(hour.index));
+  }
+
+  hasBookingInHour(start: number): boolean {
+    return this.bookings.some((booking) => booking.start <= start && booking.end > start);
+  }
+
   currentLineTop(): string {
     const start = 7 * 60;
     const minutesIntoHour = (this.currentMinutes - start) % 60;
@@ -85,6 +95,13 @@ export class AgendaComponent implements OnInit, OnDestroy {
 
   occupiedBy(court: number, start: number): boolean {
     return !!this.monthlyAt(court, start) || this.bookings.some((item) => item.court === court && start > item.start && start < item.end);
+  }
+
+  isCourtOpen(court: number, start: number): boolean {
+    const item = this.courts[court];
+    if (!item) return false;
+    const hour = 7 + start;
+    return hour >= Number(item.open.slice(0, 2)) && hour < Number(item.close.slice(0, 2));
   }
 
   setMode(mode: AgendaMode): void {
@@ -131,7 +148,9 @@ export class AgendaComponent implements OnInit, OnDestroy {
   }
 
   monthlyAt(court: number, start: number, day = 0): MonthlyMember | undefined {
-    return this.monthlyMembers.find((member) => member.active && member.court === court && member.weekday === this.dateForDay(day).getDay() && start >= member.start && start < member.end);
+    return this.isCourtOpen(court, start)
+      ? this.monthlyMembers.find((member) => member.active && member.court === court && member.weekday === this.dateForDay(day).getDay() && start >= member.start && start < member.end)
+      : undefined;
   }
 
   weekCourtIndexes(): number[] {

@@ -14,6 +14,7 @@ export class OverviewComponent {
   @Output() newBooking = new EventEmitter<{ court: number; start: number; date: string }>();
   @Output() showBooking = new EventEmitter<Booking>();
   @Output() togglePayment = new EventEmitter<number>();
+  @Output() openAgenda = new EventEmitter<void>();
   selectedDayOffset = 0;
 
   get selectedDate(): Date {
@@ -66,6 +67,13 @@ export class OverviewComponent {
     return !!this.monthlyAt(court, start) || this.bookings.some((item) => item.court === court && this.bookingDate(item) === this.dateKey(this.selectedDate) && start > item.start && start < item.end);
   }
 
+  isCourtOpen(court: number, start: number): boolean {
+    const item = this.courts[court];
+    if (!item) return false;
+    const hour = 7 + start;
+    return hour >= Number(item.open.slice(0, 2)) && hour < Number(item.close.slice(0, 2));
+  }
+
   isPastHour(start: number): boolean {
     if (this.selectedDayOffset !== 0) {
       return false;
@@ -113,6 +121,8 @@ export class OverviewComponent {
   }
 
   monthlyAt(court: number, start: number): MonthlyMember | undefined {
-    return this.monthlyMembers.find((member) => member.active && member.court === court && member.weekday === this.selectedDate.getDay() && start >= member.start && start < member.end);
+    return this.isCourtOpen(court, start)
+      ? this.monthlyMembers.find((member) => member.active && member.court === court && member.weekday === this.selectedDate.getDay() && start >= member.start && start < member.end)
+      : undefined;
   }
 }

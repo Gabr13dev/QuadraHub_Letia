@@ -35,6 +35,8 @@
                 @for (courtIndex of weekCourtIndexes(); track courtIndex) {
                   @if (weekBookingAt(day, courtIndex, hourIndex); as booking) {
                     <button class="min-h-[34px] rounded-md border-0 border-l-[3px] bg-[#e8f5bd] p-1.5 text-left text-[9px]" [class.bg-[#fff0dc]]="!booking.paid" [class.border-l-[#7ea424]]="booking.paid" [class.border-l-[#ffb45c]]="!booking.paid" (click)="showBooking.emit(booking)"><strong class="block truncate">{{ courts[courtIndex].name }}</strong><small class="block truncate">{{ booking.name }} · {{ booking.end - booking.start }}h · R$ {{ total(booking) }}</small></button>
+                  } @else if (!isCourtOpen(courtIndex, hourIndex)) {
+                    <div class="flex min-h-[34px] items-center justify-center rounded-md bg-[#f3f5f3] p-1 text-[9px] text-[#a0aaa3]">Fechada</div>
                   } @else if (monthlyAt(courtIndex, hourIndex, day)) {
                     <div class="flex min-h-[34px] items-center justify-center rounded-md border border-[#dce8bd] bg-[#f1f8dc] p-1 text-center text-[9px] font-semibold text-[#6a851f]">{{ monthlyAt(courtIndex, hourIndex, day)?.name }} · Mensalista</div>
                   } @else {
@@ -51,15 +53,17 @@
     <div class="overflow-auto"><div class="grid min-w-[650px] grid-cols-[64px_repeat(3,minmax(170px,1fr))]">
       <div></div>
       @for (court of visibleCourts; let courtIndex = $index; track court.name) { <div class="border-b border-[#e5eae6] px-2 pb-3 font-bold"><span [style.color]="court.color">●</span> {{ court.name }}<small class="mt-0.5 block text-[11px] font-normal text-[#6b7770]">{{ court.type }} · R$ {{ court.hourlyRate }}/hora</small></div> }
-      @for (hour of hours; let hourIndex = $index; track hour) {
-        <div class="relative h-[66px] border-r border-[#e5eae6] px-2.5 pt-3 text-right text-[11px] text-[#6b7770]">{{ hour }}</div>
+      @for (hour of visibleDayHours; track hour.index) {
+        <div class="relative h-[66px] border-r border-[#e5eae6] px-2.5 pt-3 text-right text-[11px] text-[#6b7770]">{{ hour.label }}</div>
         @for (court of visibleCourts; let courtIndex = $index; track court.name) {
-          @if (bookingAt(courts.indexOf(court), hourIndex); as booking) {
-            <div class="relative h-[66px] border-b border-r border-[#edf0ed]"><button class="absolute inset-1 z-[1] rounded-md border-0 border-l-[3px] bg-[#e8f5bd] p-2 text-left text-[11px]" [class.bg-[#fff0dc]]="!booking.paid" [class.border-l-[#7ea424]]="booking.paid" [class.border-l-[#ffb45c]]="!booking.paid" [style.height.px]="(booking.end - booking.start) * 66 - 8" (click)="showBooking.emit(booking)"><strong class="block">{{ booking.name }}</strong><small>{{ hours[booking.start] }}–{{ hours[booking.end] || 'fim' }} · R$ {{ total(booking) }}</small></button>@if (isCurrentHour(hourIndex)) { <span class="pointer-events-none absolute inset-x-0 z-20 border-t border-blue-500/40" [style.top]="currentLineTop()"></span> }</div>
-          } @else if (monthlyAt(courts.indexOf(court), hourIndex)) {
-            <div class="relative flex h-[66px] items-center justify-center border-b border-r border-[#dce8bd] bg-[#f1f8dc] p-1 text-center text-[10px] font-semibold text-[#6a851f]">{{ monthlyAt(courts.indexOf(court), hourIndex)?.name }} · Mensalista</div>
+          @if (bookingAt(courts.indexOf(court), hour.index); as booking) {
+            <div class="relative h-[66px] border-b border-r border-[#edf0ed]"><button class="absolute inset-1 z-[1] rounded-md border-0 border-l-[3px] bg-[#e8f5bd] p-2 text-left text-[11px]" [class.bg-[#fff0dc]]="!booking.paid" [class.border-l-[#7ea424]]="booking.paid" [class.border-l-[#ffb45c]]="!booking.paid" [style.height.px]="(booking.end - booking.start) * 66 - 8" (click)="showBooking.emit(booking)"><strong class="block">{{ booking.name }}</strong><small>{{ hours[booking.start] }}–{{ hours[booking.end] || 'fim' }} · R$ {{ total(booking) }}</small></button>@if (isCurrentHour(hour.index)) { <span class="pointer-events-none absolute inset-x-0 z-20 border-t border-blue-500/40" [style.top]="currentLineTop()"></span> }</div>
+          } @else if (!isCourtOpen(courts.indexOf(court), hour.index)) {
+            <div class="flex h-[66px] items-center justify-center border-b border-r border-[#edf0ed] bg-[#f3f5f3] text-[10px] text-[#a0aaa3]">Fechada</div>
+          } @else if (monthlyAt(courts.indexOf(court), hour.index)) {
+            <div class="relative flex h-[66px] items-center justify-center border-b border-r border-[#dce8bd] bg-[#f1f8dc] p-1 text-center text-[10px] font-semibold text-[#6a851f]">{{ monthlyAt(courts.indexOf(court), hour.index)?.name }} · Mensalista</div>
           } @else {
-            <button class="relative flex h-[66px] items-center justify-center border-0 border-b border-r border-[#edf0ed] bg-transparent text-[11px] text-[#8a978e] hover:bg-[#f4fbe0]" [class.opacity-0]="occupiedBy(courts.indexOf(court), hourIndex) || isPastHour(hourIndex)" [disabled]="occupiedBy(courts.indexOf(court), hourIndex) || isPastHour(hourIndex)" (click)="newBooking.emit({ court: courts.indexOf(court), start: hourIndex })">@if (!occupiedBy(courts.indexOf(court), hourIndex) && !isPastHour(hourIndex)) { <span>Vago ＋</span> } @if (isCurrentHour(hourIndex)) { <span class="pointer-events-none absolute inset-x-0 z-20 border-t border-blue-500/40" [style.top]="currentLineTop()"></span> }</button>
+            <button class="relative flex h-[66px] items-center justify-center border-0 border-b border-r border-[#edf0ed] bg-transparent text-[11px] text-[#8a978e] hover:bg-[#f4fbe0]" [class.bg-[#f8faf7]]="isPastHour(hour.index) && !occupiedBy(courts.indexOf(court), hour.index)" [class.opacity-0]="occupiedBy(courts.indexOf(court), hour.index)" [disabled]="occupiedBy(courts.indexOf(court), hour.index) || isPastHour(hour.index)" (click)="newBooking.emit({ court: courts.indexOf(court), start: hour.index })">@if (!occupiedBy(courts.indexOf(court), hour.index) && !isPastHour(hour.index)) { <span>Vago ＋</span> } @if (isCurrentHour(hour.index)) { <span class="pointer-events-none absolute inset-x-0 z-20 border-t border-blue-500/40" [style.top]="currentLineTop()"></span> }</button>
           }
         }
       }

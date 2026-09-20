@@ -15,7 +15,7 @@ export class MonthlyComponent {
   @Output() toggleMember = new EventEmitter<number>();
 
   form: MonthlyMember = { name: '', court: 0, weekday: 1, start: 10, end: 12, active: true };
-  weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+  weekdays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 
   get activeCount(): number {
     return this.members.filter((member) => member.active).length;

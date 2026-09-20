@@ -48,11 +48,13 @@ export class AppComponent {
   openNewBooking(): void {
     const availableCourt = this.courts.findIndex((court, courtIndex) =>
       court.active && this.hours.some((_, hourIndex) =>
+        this.isCourtOpen(courtIndex, hourIndex) &&
         !this.bookings.some((booking) => booking.court === courtIndex && hourIndex >= booking.start && hourIndex < booking.end)
       )
     );
     const courtIndex = availableCourt >= 0 ? availableCourt : 0;
     const hourIndex = this.hours.findIndex((_, index) =>
+      this.isCourtOpen(courtIndex, index) &&
       !this.bookings.some((booking) => booking.court === courtIndex && index >= booking.start && index < booking.end)
     );
     this.openBooking(courtIndex, hourIndex >= 0 ? hourIndex : 0);
@@ -74,13 +76,16 @@ export class AppComponent {
   toggleCourt(index: number): void { this.courts[index].active = !this.courts[index].active; }
   reservationsForCourt(index: number): number { return this.bookings.filter((booking) => booking.court === index).length; }
   openBooking(court: number, start: number, date = this.todayKey()): void {
+    if (!this.isCourtOpen(court, start)) return;
     if (this.bookings.some((item) => (item.date ?? this.todayKey()) === date && item.court === court && start >= item.start && start < item.end)) return;
     this.selectedCourt = court; this.selectedStart = start; this.selectedDate = date; this.clientName = ''; this.duration = 1; this.recurring = false; this.modal = 'booking';
   }
   openDetails(booking: Booking): void { this.selectedBooking = booking; this.modal = 'details'; }
   saveBooking(): void {
     if (!this.clientName.trim()) return;
-    const end = Math.min(this.selectedStart + Math.max(1, this.duration), this.hours.length);
+    const closeIndex = Math.max(0, Number(this.courts[this.selectedCourt].close.slice(0, 2)) - 7);
+    const end = Math.min(this.selectedStart + Math.max(1, this.duration), closeIndex, this.hours.length);
+    if (end <= this.selectedStart) return;
     this.bookings = [...this.bookings, { court: this.selectedCourt, date: this.selectedDate, start: this.selectedStart, end, name: this.clientName.trim(), paid: false, recurring: this.recurring }];
     this.modal = null;
   }
@@ -92,5 +97,12 @@ export class AppComponent {
   private todayKey(): string {
     const date = new Date();
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  }
+
+  private isCourtOpen(court: number, start: number): boolean {
+    const item = this.courts[court];
+    if (!item) return false;
+    const hour = 7 + start;
+    return hour >= Number(item.open.slice(0, 2)) && hour < Number(item.close.slice(0, 2));
   }
 }

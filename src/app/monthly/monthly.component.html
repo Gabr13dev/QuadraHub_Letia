@@ -1,8 +1,140 @@
 <div class="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
   <section class="rounded-[14px] border border-[#e5eae6] bg-white p-5">
-    <div class="flex items-start justify-between gap-4"><div><h2 class="font-display text-[17px] font-bold">Mensalistas ativos</h2><p class="mt-1 text-sm text-[#6b7770]">Bloqueie horários recorrentes e libere-os quando necessário.</p></div><span class="rounded-full bg-[#edf7d4] px-3 py-1 text-xs font-semibold text-[#5c7d1a]">{{ activeCount }} ativos</span></div>
-    <div class="mt-5 overflow-auto"><table class="w-full min-w-[620px] text-left text-sm"><thead class="border-b border-[#edf0ed] text-xs uppercase text-[#8a978e]"><tr><th class="pb-3">Mensalista</th><th class="pb-3">Quadra</th><th class="pb-3">Recorrência</th><th class="pb-3">Status</th><th></th></tr></thead><tbody>@for (member of members; let index = $index; track index) { <tr class="border-b border-[#edf0ed] last:border-0"><td class="py-4 font-semibold">{{ member.name }}</td><td class="py-4">{{ courts[member.court].name }}</td><td class="py-4">{{ scheduleLabel(member) }}</td><td class="py-4"><span class="rounded-full px-2.5 py-1 text-xs font-semibold" [class.bg-[#edf7d4]]="member.active" [class.text-[#5c7d1a]]="member.active" [class.bg-[#f1f3f1]]="!member.active" [class.text-[#6b7770]]="!member.active">{{ member.active ? 'Ativo' : 'Desativado' }}</span></td><td class="py-4 text-right"><button class="rounded-md border border-[#e5eae6] px-2.5 py-1.5 text-xs font-semibold" (click)="toggleMember.emit(index)">{{ member.active ? 'Excluir' : 'Ativar' }}</button></td></tr> }</tbody></table></div>
-    @if (!members.length) { <div class="mt-8 rounded-lg border border-dashed border-[#d7e0d8] p-8 text-center text-sm text-[#6b7770]">Nenhum mensalista cadastrado.</div> }
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <h2 class="font-display text-[17px] font-bold">Mensalistas ativos</h2>
+        <p class="mt-1 text-sm text-[#6b7770]">
+          Bloqueie horários recorrentes e libere-os quando necessário.
+        </p>
+      </div>
+      <span
+        class="rounded-full bg-[#edf7d4] px-3 py-1 text-xs font-semibold text-[#5c7d1a]"
+        >{{ activeCount }} ativos</span
+      >
+    </div>
+    <div class="mt-5 overflow-auto">
+      <table class="w-full min-w-[620px] text-left text-sm">
+        <thead
+          class="border-b border-[#edf0ed] text-xs uppercase text-[#8a978e]"
+        >
+          <tr>
+            <th class="pb-3">Mensalista</th>
+            <th class="pb-3">Quadra</th>
+            <th class="pb-3">Recorrência</th>
+            <th class="pb-3">Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (member of members; let index = $index; track index) {
+            <tr class="border-b border-[#edf0ed] last:border-0">
+              <td class="py-4 font-semibold">{{ member.name }}</td>
+              <td class="py-4">{{ courts[member.court].name }}</td>
+              <td class="py-4">{{ scheduleLabel(member) }}</td>
+              <td class="py-4">
+                <span
+                  class="rounded-full px-2.5 py-1 text-xs font-semibold"
+                  [class.bg-[#edf7d4]]="member.active"
+                  [class.text-[#5c7d1a]]="member.active"
+                  [class.bg-[#f1f3f1]]="!member.active"
+                  [class.text-[#6b7770]]="!member.active"
+                  >{{ member.active ? "Ativo" : "Desativado" }}</span
+                >
+              </td>
+              <td class="py-4 text-right">
+                <button
+                  class="rounded-md border border-[#e5eae6] px-2.5 py-1.5 text-xs font-semibold"
+                  (click)="toggleMember.emit(index)"
+                >
+                  {{ member.active ? "Excluir" : "Ativar" }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    @if (!members.length) {
+      <div
+        class="mt-8 rounded-lg border border-dashed border-[#d7e0d8] p-8 text-center text-sm text-[#6b7770]"
+      >
+        Nenhum mensalista cadastrado.
+      </div>
+    }
   </section>
-  <section class="rounded-[14px] border border-[#e5eae6] bg-white p-5"><h2 class="font-display text-[17px] font-bold">Novo mensalista</h2><p class="mt-1 text-sm text-[#6b7770]">Cadastre um horário fixo em poucos segundos.</p><form class="mt-5 space-y-3.5" (ngSubmit)="submit()"><label class="block text-xs font-semibold text-[#6b7770]">Nome<input class="mt-1.5 w-full rounded-lg border border-[#dfe7e0] px-3 py-2.5 text-sm" name="name" [(ngModel)]="form.name" placeholder="Ex.: João da Silva" required></label><label class="block text-xs font-semibold text-[#6b7770]">Quadra<select class="mt-1.5 w-full rounded-lg border border-[#dfe7e0] bg-white px-3 py-2.5 text-sm" name="court" [(ngModel)]="form.court">@for (court of courts; let index = $index; track court.name) { <option [ngValue]="index">{{ court.name }}</option> }</select></label><div class="grid grid-cols-2 gap-3"><label class="block text-xs font-semibold text-[#6b7770]">Dia<select class="mt-1.5 w-full rounded-lg border border-[#dfe7e0] bg-white px-3 py-2.5 text-sm" name="weekday" [(ngModel)]="form.weekday">@for (day of weekdays; let index = $index; track day) { <option [ngValue]="index">{{ day }}</option> }</select></label><label class="block text-xs font-semibold text-[#6b7770]">Início<select class="mt-1.5 w-full rounded-lg border border-[#dfe7e0] bg-white px-3 py-2.5 text-sm" name="start" [(ngModel)]="form.start">@for (hour of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]; track hour) { <option [ngValue]="hour">{{ time(hour) }}</option> }</select></label></div><label class="block text-xs font-semibold text-[#6b7770]">Fim<select class="mt-1.5 w-full rounded-lg border border-[#dfe7e0] bg-white px-3 py-2.5 text-sm" name="end" [(ngModel)]="form.end">@for (hour of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]; track hour) { <option [ngValue]="hour">{{ time(hour) }}</option> }</select></label><button class="w-full rounded-lg bg-[#c9f25a] px-4 py-2.5 font-bold text-[#14201b]" type="submit">+ Criar mensalista</button></form></section>
+  <section class="rounded-[14px] border border-[#e5eae6] bg-white p-5">
+    <h2 class="font-display text-[17px] font-bold">Novo mensalista</h2>
+    <p class="mt-1 text-sm text-[#6b7770]">
+      Cadastre um horário fixo em poucos segundos.
+    </p>
+    <form class="mt-5 space-y-3.5" (ngSubmit)="submit()">
+      <label class="block text-xs font-semibold text-[#6b7770]"
+        >Nome<input
+          class="mt-1.5 w-full rounded-lg border border-[#dfe7e0] px-3 py-2.5 text-sm"
+          name="name"
+          [(ngModel)]="form.name"
+          placeholder="Ex.: João da Silva"
+          required /></label
+      ><label class="block text-xs font-semibold text-[#6b7770]"
+        >Quadra<select
+          class="mt-1.5 w-full rounded-lg border border-[#dfe7e0] bg-white px-3 py-2.5 text-sm"
+          name="court"
+          [(ngModel)]="form.court"
+        >
+          @for (court of courts; let index = $index; track court.name) {
+            <option [ngValue]="index">{{ court.name }}</option>
+          }
+        </select></label
+      >
+      <div>
+        <span class="block text-xs font-semibold text-[#6b7770]">Recorrência semanal</span>
+        <label class="mt-1.5 block text-xs font-semibold text-[#6b7770]"
+          >Dia<select
+            class="mt-1.5 w-full rounded-lg border border-[#dfe7e0] bg-white px-3 py-2.5 text-sm font-normal"
+            name="weekday"
+            [(ngModel)]="form.weekday"
+          >
+            @for (day of weekdays; let index = $index; track day) {
+              <option [ngValue]="index">{{ day }}</option>
+            }
+          </select></label>
+          <div class="mt-3 grid grid-cols-2 gap-3">
+          <label class="block text-xs font-semibold text-[#6b7770]"
+            >Início<select
+              class="mt-1.5 w-full rounded-lg border border-[#dfe7e0] bg-white px-3 py-2.5 text-sm font-normal"
+              name="start"
+              [(ngModel)]="form.start"
+          >
+            @for (
+              hour of [
+                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+              ];
+              track hour
+            ) {
+              <option [ngValue]="hour">{{ time(hour) }}</option>
+            }
+          </select></label
+          ><label class="block text-xs font-semibold text-[#6b7770]"
+          >Fim<select
+            class="mt-1.5 w-full rounded-lg border border-[#dfe7e0] bg-white px-3 py-2.5 text-sm font-normal"
+          name="end"
+          [(ngModel)]="form.end"
+        >
+          @for (
+            hour of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+            track hour
+          ) {
+            <option [ngValue]="hour">{{ time(hour) }}</option>
+          }
+        </select></label>
+        </div>
+      </div>
+      <button
+        class="w-full rounded-lg bg-[#c9f25a] px-4 py-2.5 font-bold text-[#14201b]"
+        type="submit"
+      >
+        + Criar mensalista
+      </button>
+    </form>
+  </section>
 </div>

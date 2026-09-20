@@ -6,7 +6,7 @@
       @if (view === 'overview' || view === 'agenda') { <div class="flex gap-2.5"><button class="rounded-[9px] border-0 bg-[#c9f25a] px-4 py-2.5 font-bold text-[#14201b]" (click)="openNewBooking()">+ Nova reserva</button></div> }
     </header>
     @if (view === 'overview') {
-      <app-overview [courts]="courts" [bookings]="bookings" [hours]="hours" [monthlyMembers]="monthlyMembers" (newBooking)="openBooking($event.court, $event.start, $event.date)" (showBooking)="openDetails($event)" (togglePayment)="toggleQuickPayment($event)"></app-overview>
+      <app-overview [courts]="courts" [bookings]="bookings" [hours]="hours" [monthlyMembers]="monthlyMembers" (newBooking)="openBooking($event.court, $event.start, $event.date)" (showBooking)="openDetails($event)" (togglePayment)="toggleQuickPayment($event)" (openAgenda)="navigate('agenda')"></app-overview>
     } @else if (view === 'agenda') {
       <app-agenda [courts]="courts" [bookings]="bookings" [hours]="hours" [monthlyMembers]="monthlyMembers" (newBooking)="openBooking($event.court, $event.start)" (showBooking)="openDetails($event)" (togglePayment)="toggleQuickPayment($event)"></app-agenda>
     } @else if (view === 'monthly') {
