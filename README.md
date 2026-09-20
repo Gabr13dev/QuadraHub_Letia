@@ -1,59 +1,84 @@
-# Quadrahub
+# QuadraHub
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.27.
+Sistema web para operação de complexos esportivos, com foco em reservas de quadras, disponibilidade de horários e gestão de mensalistas.
 
-## Development server
+## Funcionalidades
 
-To start a local development server, run:
+- **Visão geral:** resumo operacional e disponibilidade rápida.
+- **Agenda:** visualizações diária e semanal, filtro por quadra e indicação do horário atual.
+- **Reservas:** criação de reservas com nome, duração, recorrência e status manual de pagamento.
+- **Disponibilidade:** horários livres, ocupados, passados e bloqueados por mensalistas.
+- **Minhas quadras:** cadastro, edição, preço fixo por hora, horário de funcionamento e ativação.
+- **Mensalistas:** cadastro rápido de recorrências semanais, visão macro dos horários e ativação/desativação.
+- **Preços por quadra:** cada quadra possui seu próprio valor por hora; reservas de múltiplas horas calculam o total automaticamente.
+- **Interface responsiva:** layout construído com Angular e Tailwind CSS.
 
-```bash
-ng serve
-```
+## Stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Angular 19
+- TypeScript
+- Tailwind CSS 3
+- PostCSS
+- RxJS
 
-## Code scaffolding
+## Requisitos
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Node.js 20+
+- npm 10+
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Instalação
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Desenvolvimento
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Inicie o servidor local:
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+Depois acesse [http://localhost:4200](http://localhost:4200).
 
-For end-to-end (e2e) testing, run:
+O Angular recarrega a aplicação automaticamente após alterações nos arquivos.
+
+## Build
+
+Para gerar a versão de produção:
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Os arquivos compilados são gerados em `dist/quadrahub`.
 
-## Additional Resources
+## Testes
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Execute os testes unitários com:
+
+```bash
+npm test
+```
+
+O projeto usa Karma e Jasmine, conforme a configuração padrão do Angular CLI.
+
+## Estrutura principal
+
+```text
+src/
+└── app/
+    ├── agenda/              # Agenda diária e semanal
+    ├── courts/              # Gestão de quadras
+    ├── monthly/             # Gestão de mensalistas
+    ├── overview/            # Visão geral e disponibilidade rápida
+    ├── reservation-modal/   # Reservas, detalhes e formulários
+    ├── sidebar/             # Navegação principal
+    ├── app.component.*      # Estado e composição da aplicação
+    └── models.ts            # Modelos de quadras, reservas e mensalistas
+```
+
+## Observações
+
+Este MVP mantém os dados em memória no `AppComponent`. Ao recarregar a página, as alterações feitas durante a sessão são perdidas. A integração com API, autenticação e persistência em banco de dados ainda não faz parte deste escopo.
