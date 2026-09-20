@@ -1,0 +1,19 @@
+<div class="flex min-h-screen bg-[#f8faf7] text-[#14201b]">
+  <app-sidebar [view]="view" (viewChange)="navigate($event)"></app-sidebar>
+  <main class="mx-auto w-full max-w-[1500px] px-3.5 py-[21px] sm:px-[22px] sm:py-[25px] lg:px-[42px] lg:py-[29px]" id="visao">
+    <header class="mb-7 flex items-start justify-between gap-4 sm:items-center">
+      <div>@if (view === 'overview') { <h1 class="font-display text-[23px] font-bold tracking-[-.6px] sm:text-[28px]">Bom dia, Marina <span>👋</span></h1><p class="mt-1 text-[#6b7770]">Aqui está o resumo das suas quadras hoje.</p> } @else if (view === 'agenda') { <h1 class="font-display text-[23px] font-bold tracking-[-.6px] sm:text-[28px]">Agenda</h1><p class="mt-1 text-[#6b7770]">Acompanhe todas as reservas e horários das suas quadras.</p> } @else if (view === 'monthly') { <h1 class="font-display text-[23px] font-bold tracking-[-.6px] sm:text-[28px]">Mensalistas</h1><p class="mt-1 text-[#6b7770]">Gerencie horários fixos e recorrências das suas quadras.</p> } @else { <h1 class="font-display text-[23px] font-bold tracking-[-.6px] sm:text-[28px]">Minhas quadras</h1><p class="mt-1 text-[#6b7770]">Gerencie suas quadras, preços e horários de funcionamento.</p> }</div>
+      @if (view === 'overview' || view === 'agenda') { <div class="flex gap-2.5"><button class="rounded-[9px] border-0 bg-[#c9f25a] px-4 py-2.5 font-bold text-[#14201b]" (click)="openNewBooking()">+ Nova reserva</button></div> }
+    </header>
+    @if (view === 'overview') {
+      <app-overview [courts]="courts" [bookings]="bookings" [hours]="hours" [monthlyMembers]="monthlyMembers" (newBooking)="openBooking($event.court, $event.start, $event.date)" (showBooking)="openDetails($event)" (togglePayment)="toggleQuickPayment($event)"></app-overview>
+    } @else if (view === 'agenda') {
+      <app-agenda [courts]="courts" [bookings]="bookings" [hours]="hours" [monthlyMembers]="monthlyMembers" (newBooking)="openBooking($event.court, $event.start)" (showBooking)="openDetails($event)" (togglePayment)="toggleQuickPayment($event)"></app-agenda>
+    } @else if (view === 'monthly') {
+      <app-monthly [courts]="courts" [members]="monthlyMembers" (addMember)="addMonthlyMember($event)" (toggleMember)="toggleMonthlyMember($event)"></app-monthly>
+    } @else {
+      <app-courts [courts]="courts" [reservationsForCourt]="reservationsForCourt.bind(this)" (addCourt)="openCourtForm()" (editCourt)="openCourtForm($event)" (toggleCourt)="toggleCourt($event)"></app-courts>
+    }
+  </main>
+</div>
+<app-reservation-modal [modal]="modal" [courts]="courts" [hours]="hours" [selectedCourt]="selectedCourt" [selectedStart]="selectedStart" [selectedBooking]="selectedBooking" [clientName]="clientName" [duration]="duration" [recurring]="recurring" [editingCourt]="editingCourt" [courtName]="courtName" [courtType]="courtType" [courtOpen]="courtOpen" [courtClose]="courtClose" [courtHourlyRate]="courtHourlyRate" (clientNameChange)="clientName = $event" (durationChange)="duration = $event" (recurringChange)="recurring = $event" (courtNameChange)="courtName = $event" (courtTypeChange)="courtType = $event" (courtOpenChange)="courtOpen = $event" (courtCloseChange)="courtClose = $event" (courtHourlyRateChange)="courtHourlyRate = $event" (saveBooking)="saveBooking()" (saveDetails)="saveDetails()" (saveCourt)="saveCourt()" (close)="closeModal()"></app-reservation-modal>
