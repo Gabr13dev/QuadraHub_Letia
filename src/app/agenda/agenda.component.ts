@@ -121,6 +121,21 @@ export class AgendaComponent implements OnInit, OnDestroy {
     this.periodOffset = 0;
   }
 
+  get dateInputValue(): string {
+    const date = this.periodDate;
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  }
+
+  selectDate(value: string): void {
+    if (!value) return;
+    const [year, month, day] = value.split('-').map(Number);
+    const selected = new Date(year, month - 1, day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const difference = Math.round((selected.getTime() - today.getTime()) / 86_400_000);
+    this.periodOffset = this.mode === 'week' ? Math.round(difference / 7) : difference;
+  }
+
   dateForDay(day: number): Date {
     const date = new Date(this.periodDate);
     date.setDate(date.getDate() + day);

@@ -6,7 +6,7 @@
     </div>
     <div class="flex flex-wrap items-center gap-2">
       <button class="rounded-[9px] border border-[#e5eae6] bg-white px-3 py-2 text-sm" (click)="movePeriod(-1)" aria-label="Período anterior">‹</button>
-      <button class="rounded-[9px] border border-[#e5eae6] bg-white px-3 py-2 text-sm" (click)="goToday()">{{ isToday() ? 'Hoje' : 'Voltar para hoje' }}</button>
+      <div class="relative"><button class="rounded-[9px] border border-[#e5eae6] bg-white px-3 py-2 text-sm" type="button">{{ isToday() ? 'Hoje' : 'Voltar para hoje' }}</button><input class="absolute inset-0 h-full w-full cursor-pointer opacity-0" type="date" [value]="dateInputValue" (change)="selectDate($any($event.target).value)" aria-label="Selecionar dia"></div>
       <button class="rounded-[9px] border border-[#e5eae6] bg-white px-3 py-2 text-sm" (click)="movePeriod(1)" aria-label="Próximo período">›</button>
       <select class="rounded-[9px] border border-[#e5eae6] bg-white px-3 py-2 text-sm" [(ngModel)]="courtFilter" aria-label="Filtrar por quadra">
         <option [ngValue]="-1">Todas as quadras</option>
