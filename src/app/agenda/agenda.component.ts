@@ -126,6 +126,24 @@ export class AgendaComponent implements OnInit, OnDestroy {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   }
 
+  get datePickerLabel(): string {
+    if (this.isToday()) return 'Hoje';
+    return this.periodDate.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  }
+
+  openDatePicker(input: HTMLInputElement): void {
+    const picker = input as HTMLInputElement & { showPicker?: () => void };
+    if (typeof picker.showPicker === 'function') {
+      picker.showPicker();
+    } else {
+      input.click();
+    }
+  }
+
   selectDate(value: string): void {
     if (!value) return;
     const [year, month, day] = value.split('-').map(Number);
