@@ -39,6 +39,42 @@ export class ReservationModalComponent {
   @Output() saveCourt = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
 
+  sportQuery = '';
+  readonly sportOptions = ['Beach tennis', 'Futevôlei', 'Vôlei de praia', 'Tênis', 'Futebol society', 'Padel', 'Basquete', 'Vôlei'];
+
+  get selectedSports(): string[] {
+    return this.courtType.split(',').map((sport) => sport.trim()).filter(Boolean);
+  }
+
+  get sportSuggestions(): string[] {
+    const query = this.sportQuery.trim().toLocaleLowerCase();
+    return this.sportOptions.filter((sport) => !this.selectedSports.includes(sport) && (!query || sport.toLocaleLowerCase().includes(query)));
+  }
+
+  get formattedHourlyRate(): string {
+    return `R$ ${this.courtHourlyRate.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  addSport(sport: string): void {
+    const sports = [...this.selectedSports, sport];
+    this.courtTypeChange.emit(sports.join(', '));
+    this.sportQuery = '';
+  }
+
+  removeSport(sport: string): void {
+    this.courtTypeChange.emit(this.selectedSports.filter((item) => item !== sport).join(', '));
+  }
+
+  onSportQueryChange(value: string): void {
+    this.sportQuery = value;
+  }
+
+  onRateInput(value: string): void {
+    const normalized = value.trim().replace(/\s/g, '').replace('R$', '').replace(/\./g, '').replace(',', '.');
+    const parsed = Number(normalized);
+    this.courtHourlyRateChange.emit(Number.isFinite(parsed) ? Math.max(0, parsed) : 0);
+  }
+
   total(booking: Booking): number {
     return (booking.end - booking.start) * (this.courts[booking.court]?.hourlyRate ?? 0);
   }
