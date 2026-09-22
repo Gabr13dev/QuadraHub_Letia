@@ -16,9 +16,9 @@ export class AppComponent {
   readonly defaultHourlyRate = 80;
   readonly hours = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
   courts: Court[] = [
-    { name: 'Arena 01', type: 'Beach tennis', hourlyRate: 80, color: '#ffb45c', active: true, open: '08:00', close: '22:00' },
-    { name: 'Arena 02', type: 'Tênis', hourlyRate: 90, color: '#90c8ff', active: true, open: '08:00', close: '22:00' },
-    { name: 'Arena 03', type: 'Futebol society', hourlyRate: 180, color: '#c7e85f', active: true, open: '07:00', close: '23:00' }
+    { name: 'Arena 01', sports: ['Beach tennis', 'Futevôlei', 'Vôlei de praia'], hourlyRate: 80, color: '#ffb45c', active: true, open: '08:00', close: '22:00' },
+    { name: 'Arena 02', sports: ['Tênis'], hourlyRate: 90, color: '#90c8ff', active: true, open: '08:00', close: '22:00' },
+    { name: 'Arena 03', sports: ['Futebol society'], hourlyRate: 180, color: '#c7e85f', active: true, open: '07:00', close: '23:00' }
   ];
   bookings: Booking[] = [
     { court: 0, start: 10, end: 12, name: 'João Pedro', paid: false, recurring: true },
@@ -63,14 +63,16 @@ export class AppComponent {
   openCourtForm(index = -1): void {
     this.editingCourt = index;
     const court = index >= 0 ? this.courts[index] : null;
-    this.courtName = court?.name ?? ''; this.courtType = court?.type ?? '';
+    this.courtName = court?.name ?? ''; this.courtType = court?.sports.join(', ') ?? '';
     this.courtOpen = court?.open ?? '08:00'; this.courtClose = court?.close ?? '22:00';
     this.courtHourlyRate = court?.hourlyRate ?? this.defaultHourlyRate; this.modal = 'court';
   }
   saveCourt(): void {
     if (!this.courtName.trim() || !this.courtType.trim()) return;
     const current = this.editingCourt >= 0 ? this.courts[this.editingCourt] : null;
-    const data: Court = { name: this.courtName.trim(), type: this.courtType.trim(), hourlyRate: Math.max(0, Number(this.courtHourlyRate) || this.defaultHourlyRate), color: current?.color ?? '#c9f25a', active: current?.active ?? true, open: this.courtOpen, close: this.courtClose };
+    const sports = this.courtType.split(',').map((sport) => sport.trim()).filter(Boolean);
+    if (!sports.length) return;
+    const data: Court = { name: this.courtName.trim(), sports, hourlyRate: Math.max(0, Number(this.courtHourlyRate) || this.defaultHourlyRate), color: current?.color ?? '#c9f25a', active: current?.active ?? true, open: this.courtOpen, close: this.courtClose };
     this.courts = this.editingCourt >= 0 ? this.courts.map((court, i) => i === this.editingCourt ? data : court) : [...this.courts, data];
     this.modal = null;
   }

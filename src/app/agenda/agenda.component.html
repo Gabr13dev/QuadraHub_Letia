@@ -52,7 +52,7 @@
     } @else {
     <div class="overflow-auto"><div class="grid min-w-[650px] grid-cols-[64px_repeat(3,minmax(170px,1fr))]">
       <div></div>
-      @for (court of visibleCourts; let courtIndex = $index; track court.name) { <div class="border-b border-[#e5eae6] px-2 pb-3 font-bold"><span [style.color]="court.color">●</span> {{ court.name }}<small class="mt-0.5 block text-[11px] font-normal text-[#6b7770]">{{ court.type }} · R$ {{ court.hourlyRate }}/hora</small></div> }
+      @for (court of visibleCourts; let courtIndex = $index; track court.name) { <div class="border-b border-[#e5eae6] px-2 pb-3 font-bold"><span [style.color]="court.color">●</span> {{ court.name }}<small class="mt-0.5 block text-[11px] font-normal text-[#6b7770]">{{ court.sports.join(' · ') }} · R$ {{ court.hourlyRate }}/hora</small></div> }
       @for (hour of visibleDayHours; track hour.index) {
         <div class="relative h-[66px] border-r border-[#e5eae6] px-2.5 pt-3 text-right text-[11px] text-[#6b7770]">{{ hour.label }}</div>
         @for (court of visibleCourts; let courtIndex = $index; track court.name) {

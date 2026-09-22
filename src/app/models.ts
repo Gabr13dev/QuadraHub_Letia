@@ -1,6 +1,6 @@
 export interface Court {
   name: string;
-  type: string;
+  sports: string[];
   hourlyRate: number;
   color: string;
   active: boolean;
