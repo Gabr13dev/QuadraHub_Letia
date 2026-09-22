@@ -37,6 +37,7 @@ export class AppComponent {
   clientName = '';
   duration = 1;
   recurring = false;
+  paid = false;
   editingCourt = -1;
   courtName = '';
   courtType = '';
@@ -78,7 +79,7 @@ export class AppComponent {
   openBooking(court: number, start: number, date = this.todayKey()): void {
     if (!this.isCourtOpen(court, start)) return;
     if (this.bookings.some((item) => (item.date ?? this.todayKey()) === date && item.court === court && start >= item.start && start < item.end)) return;
-    this.selectedCourt = court; this.selectedStart = start; this.selectedDate = date; this.clientName = ''; this.duration = 1; this.recurring = false; this.modal = 'booking';
+    this.selectedCourt = court; this.selectedStart = start; this.selectedDate = date; this.clientName = ''; this.duration = 1; this.recurring = false; this.paid = false; this.modal = 'booking';
   }
   openDetails(booking: Booking): void { this.selectedBooking = booking; this.modal = 'details'; }
   saveBooking(): void {
@@ -86,7 +87,7 @@ export class AppComponent {
     const closeIndex = Math.max(0, Number(this.courts[this.selectedCourt].close.slice(0, 2)) - 7);
     const end = Math.min(this.selectedStart + Math.max(1, this.duration), closeIndex, this.hours.length);
     if (end <= this.selectedStart) return;
-    this.bookings = [...this.bookings, { court: this.selectedCourt, date: this.selectedDate, start: this.selectedStart, end, name: this.clientName.trim(), paid: false, recurring: this.recurring }];
+    this.bookings = [...this.bookings, { court: this.selectedCourt, date: this.selectedDate, start: this.selectedStart, end, name: this.clientName.trim(), paid: this.paid, recurring: this.recurring }];
     this.modal = null;
   }
   saveDetails(): void { this.modal = null; this.selectedBooking = null; }

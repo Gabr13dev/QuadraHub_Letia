@@ -19,6 +19,7 @@ export class ReservationModalComponent {
   @Input() clientName = '';
   @Input() duration = 1;
   @Input() recurring = false;
+  @Input() paid = false;
   @Input() editingCourt = -1;
   @Input() courtName = '';
   @Input() courtType = '';
@@ -27,6 +28,7 @@ export class ReservationModalComponent {
   @Output() clientNameChange = new EventEmitter<string>();
   @Output() durationChange = new EventEmitter<number>();
   @Output() recurringChange = new EventEmitter<boolean>();
+  @Output() paidChange = new EventEmitter<boolean>();
   @Output() courtNameChange = new EventEmitter<string>();
   @Output() courtTypeChange = new EventEmitter<string>();
   @Output() courtOpenChange = new EventEmitter<string>();
