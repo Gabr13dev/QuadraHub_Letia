@@ -1,46 +1,46 @@
-<section class="mb-5 rounded-[14px] border border-[#e5eae6] bg-white p-4 sm:p-5">
+<section class="mb-5 rounded-[14px] border border-[#DDE6F3] bg-white p-4 sm:p-5">
   <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-    <div class="flex rounded-[9px] bg-[#f1f4f0] p-1">
-      <button class="rounded-[7px] px-4 py-2 text-sm text-[#6b7770]" [class.bg-white]="mode === 'day'" [class.font-semibold]="mode === 'day'" [class.text-[#14201b]]="mode === 'day'" (click)="setMode('day')">Dia</button>
-      <button class="rounded-[7px] px-4 py-2 text-sm text-[#6b7770]" [class.bg-white]="mode === 'week'" [class.font-semibold]="mode === 'week'" [class.text-[#14201b]]="mode === 'week'" (click)="setMode('week')">Semana</button>
+    <div class="flex rounded-[9px] bg-[#EEF3FB] p-1">
+      <button class="rounded-[7px] px-4 py-2 text-sm text-[#7183A3]" [class.bg-white]="mode === 'day'" [class.font-semibold]="mode === 'day'" [class.text-[#0B1F3B]]="mode === 'day'" (click)="setMode('day')">Dia</button>
+      <button class="rounded-[7px] px-4 py-2 text-sm text-[#7183A3]" [class.bg-white]="mode === 'week'" [class.font-semibold]="mode === 'week'" [class.text-[#0B1F3B]]="mode === 'week'" (click)="setMode('week')">Semana</button>
     </div>
     <div class="flex flex-wrap items-center gap-2">
-      <button class="rounded-[9px] border border-[#e5eae6] bg-white px-3 py-2 text-sm" (click)="movePeriod(-1)" aria-label="Período anterior">‹</button>
-      <div class="relative"><button class="rounded-[9px] border border-[#e5eae6] bg-white px-3 py-2 text-sm" type="button" (click)="openDatePicker(datePicker)">{{ datePickerLabel }}</button><input #datePicker class="pointer-events-none absolute h-0 w-0 opacity-0" type="date" [value]="dateInputValue" (change)="selectDate($any($event.target).value)" aria-label="Selecionar dia"></div>
-      <button class="rounded-[9px] border border-[#e5eae6] bg-white px-3 py-2 text-sm" (click)="movePeriod(1)" aria-label="Próximo período">›</button>
-      <select class="rounded-[9px] border border-[#e5eae6] bg-white px-3 py-2 text-sm" [(ngModel)]="courtFilter" aria-label="Filtrar por quadra">
+      <button class="rounded-[9px] border border-[#DDE6F3] bg-white px-3 py-2 text-sm" (click)="movePeriod(-1)" aria-label="Período anterior">‹</button>
+      <div class="relative"><button class="rounded-[9px] border border-[#DDE6F3] bg-white px-3 py-2 text-sm" type="button" (click)="openDatePicker(datePicker)">{{ datePickerLabel }}</button><input #datePicker class="pointer-events-none absolute h-0 w-0 opacity-0" type="date" [value]="dateInputValue" (change)="selectDate($any($event.target).value)" aria-label="Selecionar dia"></div>
+      <button class="rounded-[9px] border border-[#DDE6F3] bg-white px-3 py-2 text-sm" (click)="movePeriod(1)" aria-label="Próximo período">›</button>
+      <select class="rounded-[9px] border border-[#DDE6F3] bg-white px-3 py-2 text-sm" [(ngModel)]="courtFilter" aria-label="Filtrar por quadra">
         <option [ngValue]="-1">Todas as quadras</option>
         @for (court of courts; let index = $index; track court.name) { <option [ngValue]="index">{{ court.name }}</option> }
       </select>
     </div>
   </div>
-  <div class="mt-4 flex items-center justify-between border-t border-[#edf0ed] pt-4">
-    <div><h2 class="font-display text-lg font-bold capitalize">{{ periodLabel }}</h2><p class="mt-1 text-xs text-[#6b7770]">{{ bookings.length }} reservas · {{ courts.length }} quadras cadastradas</p></div>
-    @if (isToday()) { <span class="rounded-full bg-[#f0f8d8] px-3 py-1 text-xs font-semibold text-[#5c7d1a]">Hoje</span> }
+  <div class="mt-4 flex items-center justify-between border-t border-[#E6ECF5] pt-4">
+    <div><h2 class="font-display text-lg font-bold capitalize">{{ periodLabel }}</h2><p class="mt-1 text-xs text-[#7183A3]">{{ bookings.length }} reservas · {{ courts.length }} quadras cadastradas</p></div>
+    @if (isToday()) { <span class="rounded-full bg-[#E6EFFF] px-3 py-1 text-xs font-semibold text-[#0057FF]">Hoje</span> }
   </div>
 </section>
 
-<section class="rounded-[14px] border border-[#e5eae6] bg-white p-4 sm:p-5">
+<section class="rounded-[14px] border border-[#DDE6F3] bg-white p-4 sm:p-5">
     @if (mode === 'week') {
       <div class="overflow-auto">
         <div class="grid min-w-[920px] grid-cols-[64px_repeat(7,minmax(120px,1fr))]">
-          <div class="border-b border-[#e5eae6] pb-3"></div>
+          <div class="border-b border-[#DDE6F3] pb-3"></div>
           @for (_ of [0,1,2,3,4,5,6]; let day = $index; track day) {
-            <div class="border-b border-[#e5eae6] px-2 pb-3 text-center text-xs font-semibold text-[#6b7770]" [class.text-[#6f9225]]="day === 0">{{ dayLabel(day) }}</div>
+            <div class="border-b border-[#DDE6F3] px-2 pb-3 text-center text-xs font-semibold text-[#7183A3]" [class.text-[#0057FF]]="day === 0">{{ dayLabel(day) }}</div>
           }
           @for (hour of hours; let hourIndex = $index; track hour) {
-            <div class="relative h-[82px] border-r border-[#e5eae6] px-2.5 pt-3 text-right text-[11px] text-[#6b7770]">{{ hour }}</div>
+            <div class="relative h-[82px] border-r border-[#DDE6F3] px-2.5 pt-3 text-right text-[11px] text-[#7183A3]">{{ hour }}</div>
             @for (_ of [0,1,2,3,4,5,6]; let day = $index; track day) {
-              <div class="relative grid min-h-[82px] grid-cols-1 gap-1 border-b border-r border-[#edf0ed] p-1" [class.sm:grid-cols-2]="courtFilter < 0">
+              <div class="relative grid min-h-[82px] grid-cols-1 gap-1 border-b border-r border-[#E6ECF5] p-1" [class.sm:grid-cols-2]="courtFilter < 0">
                 @for (courtIndex of weekCourtIndexes(); track courtIndex) {
                   @if (weekBookingAt(day, courtIndex, hourIndex); as booking) {
-                    <button class="min-h-[34px] rounded-md border-0 border-l-[3px] bg-[#e8f5bd] p-1.5 text-left text-[9px]" [class.bg-[#fff0dc]]="!booking.paid" [class.border-l-[#7ea424]]="booking.paid" [class.border-l-[#ffb45c]]="!booking.paid" (click)="showBooking.emit(booking)"><strong class="block truncate">{{ courts[courtIndex].name }}</strong><small class="block truncate">{{ booking.name }} · {{ booking.end - booking.start }}h · R$ {{ total(booking) }}</small></button>
+                    <button class="min-h-[34px] rounded-md border-0 border-l-[3px] bg-[#E6EFFF] p-1.5 text-left text-[9px]" [class.bg-[#EEF4FF]]="!booking.paid" [class.border-l-[#0057FF]]="booking.paid" [class.border-l-[#74A8FF]]="!booking.paid" (click)="showBooking.emit(booking)"><strong class="block truncate">{{ courts[courtIndex].name }}</strong><small class="block truncate">{{ booking.name }} · {{ booking.end - booking.start }}h · R$ {{ total(booking) }}</small></button>
                   } @else if (!isCourtOpen(courtIndex, hourIndex)) {
-                    <div class="flex min-h-[34px] items-center justify-center rounded-md bg-[#f3f5f3] p-1 text-[9px] text-[#a0aaa3]">Fechada</div>
+                    <div class="flex min-h-[34px] items-center justify-center rounded-md bg-[#F0F4FA] p-1 text-[9px] text-[#a0aaa3]">Fechada</div>
                   } @else if (monthlyAt(courtIndex, hourIndex, day)) {
                     <div class="flex min-h-[34px] items-center justify-center rounded-md border border-[#dce8bd] bg-[#f1f8dc] p-1 text-center text-[9px] font-semibold text-[#6a851f]">{{ monthlyAt(courtIndex, hourIndex, day)?.name }} · Mensalista</div>
                   } @else {
-                    <button class="flex min-h-[34px] items-center justify-center rounded-md border border-dashed border-[#d7e0d8] bg-[#fbfdfb] text-[9px] text-[#8a978e] hover:border-[#9ebd5a] hover:bg-[#f4fbe0] hover:text-[#557319]" [class.opacity-0]="isPastHour(hourIndex, day)" [disabled]="isPastHour(hourIndex, day)" (click)="newBooking.emit({ court: courtIndex, start: hourIndex })">@if (!isPastHour(hourIndex, day)) { <span class="truncate">{{ courts[courtIndex].name }} · Vago ＋</span> }</button>
+                    <button class="flex min-h-[34px] items-center justify-center rounded-md border border-dashed border-[#C8D5E8] bg-[#FAFCFF] text-[9px] text-[#7183A3] hover:border-[#9ebd5a] hover:bg-[#EAF1FF] hover:text-[#557319]" [class.opacity-0]="isPastHour(hourIndex, day)" [disabled]="isPastHour(hourIndex, day)" (click)="newBooking.emit({ court: courtIndex, start: hourIndex })">@if (!isPastHour(hourIndex, day)) { <span class="truncate">{{ courts[courtIndex].name }} · Vago ＋</span> }</button>
                   }
                 }
                 @if (isCurrentHour(hourIndex)) { <span class="pointer-events-none absolute inset-x-0 z-10 border-t border-blue-500/40" [style.top]="currentLineTop()"></span> }
@@ -52,22 +52,22 @@
     } @else {
     <div class="overflow-auto"><div class="grid min-w-[650px] grid-cols-[64px_repeat(3,minmax(170px,1fr))]">
       <div></div>
-      @for (court of visibleCourts; let courtIndex = $index; track court.name) { <div class="border-b border-[#e5eae6] px-2 pb-3 font-bold"><span [style.color]="court.color">●</span> {{ court.name }}<small class="mt-0.5 block text-[11px] font-normal text-[#6b7770]">{{ court.sports.join(' · ') }} · R$ {{ court.hourlyRate }}/hora</small></div> }
+      @for (court of visibleCourts; let courtIndex = $index; track court.name) { <div class="border-b border-[#DDE6F3] px-2 pb-3 font-bold"><span [style.color]="court.color">●</span> {{ court.name }}<small class="mt-0.5 block text-[11px] font-normal text-[#7183A3]">{{ court.sports.join(' · ') }} · R$ {{ court.hourlyRate }}/hora</small></div> }
       @for (hour of visibleDayHours; track hour.index) {
-        <div class="relative h-[66px] border-r border-[#e5eae6] px-2.5 pt-3 text-right text-[11px] text-[#6b7770]">{{ hour.label }}</div>
+        <div class="relative h-[66px] border-r border-[#DDE6F3] px-2.5 pt-3 text-right text-[11px] text-[#7183A3]">{{ hour.label }}</div>
         @for (court of visibleCourts; let courtIndex = $index; track court.name) {
           @if (bookingAt(courts.indexOf(court), hour.index); as booking) {
-            <div class="relative h-[66px] border-b border-r border-[#edf0ed]"><button class="absolute inset-1 z-[1] rounded-md border-0 border-l-[3px] bg-[#e8f5bd] p-2 text-left text-[11px]" [class.bg-[#fff0dc]]="!booking.paid" [class.border-l-[#7ea424]]="booking.paid" [class.border-l-[#ffb45c]]="!booking.paid" [style.height.px]="(booking.end - booking.start) * 66 - 8" (click)="showBooking.emit(booking)"><strong class="block">{{ booking.name }}</strong><small>{{ hours[booking.start] }}–{{ hours[booking.end] || 'fim' }} · R$ {{ total(booking) }}</small></button>@if (isCurrentHour(hour.index)) { <span class="pointer-events-none absolute inset-x-0 z-20 border-t border-blue-500/40" [style.top]="currentLineTop()"></span> }</div>
+            <div class="relative h-[66px] border-b border-r border-[#E6ECF5]"><button class="absolute inset-1 z-[1] rounded-md border-0 border-l-[3px] bg-[#E6EFFF] p-2 text-left text-[11px]" [class.bg-[#EEF4FF]]="!booking.paid" [class.border-l-[#0057FF]]="booking.paid" [class.border-l-[#74A8FF]]="!booking.paid" [style.height.px]="(booking.end - booking.start) * 66 - 8" (click)="showBooking.emit(booking)"><strong class="block">{{ booking.name }}</strong><small>{{ hours[booking.start] }}–{{ hours[booking.end] || 'fim' }} · R$ {{ total(booking) }}</small></button>@if (isCurrentHour(hour.index)) { <span class="pointer-events-none absolute inset-x-0 z-20 border-t border-blue-500/40" [style.top]="currentLineTop()"></span> }</div>
           } @else if (!isCourtOpen(courts.indexOf(court), hour.index)) {
-            <div class="flex h-[66px] items-center justify-center border-b border-r border-[#edf0ed] bg-[#f3f5f3] text-[10px] text-[#a0aaa3]">Fechada</div>
+            <div class="flex h-[66px] items-center justify-center border-b border-r border-[#E6ECF5] bg-[#F0F4FA] text-[10px] text-[#a0aaa3]">Fechada</div>
           } @else if (monthlyAt(courts.indexOf(court), hour.index)) {
             <div class="relative flex h-[66px] items-center justify-center border-b border-r border-[#dce8bd] bg-[#f1f8dc] p-1 text-center text-[10px] font-semibold text-[#6a851f]">{{ monthlyAt(courts.indexOf(court), hour.index)?.name }} · Mensalista</div>
           } @else {
-            <button class="relative flex h-[66px] items-center justify-center border-0 border-b border-r border-[#edf0ed] bg-transparent text-[11px] text-[#8a978e] hover:bg-[#f4fbe0]" [class.bg-[#f8faf7]]="isPastHour(hour.index) && !occupiedBy(courts.indexOf(court), hour.index)" [class.opacity-0]="occupiedBy(courts.indexOf(court), hour.index)" [disabled]="occupiedBy(courts.indexOf(court), hour.index) || isPastHour(hour.index)" (click)="newBooking.emit({ court: courts.indexOf(court), start: hour.index })">@if (!occupiedBy(courts.indexOf(court), hour.index) && !isPastHour(hour.index)) { <span>Vago ＋</span> } @if (isCurrentHour(hour.index)) { <span class="pointer-events-none absolute inset-x-0 z-20 border-t border-blue-500/40" [style.top]="currentLineTop()"></span> }</button>
+            <button class="relative flex h-[66px] items-center justify-center border-0 border-b border-r border-[#E6ECF5] bg-transparent text-[11px] text-[#7183A3] hover:bg-[#EAF1FF]" [class.bg-[#F7F9FC]]="isPastHour(hour.index) && !occupiedBy(courts.indexOf(court), hour.index)" [class.opacity-0]="occupiedBy(courts.indexOf(court), hour.index)" [disabled]="occupiedBy(courts.indexOf(court), hour.index) || isPastHour(hour.index)" (click)="newBooking.emit({ court: courts.indexOf(court), start: hour.index })">@if (!occupiedBy(courts.indexOf(court), hour.index) && !isPastHour(hour.index)) { <span>Vago ＋</span> } @if (isCurrentHour(hour.index)) { <span class="pointer-events-none absolute inset-x-0 z-20 border-t border-blue-500/40" [style.top]="currentLineTop()"></span> }</button>
           }
         }
       }
     </div></div>
     }
-    <div class="mt-4 flex flex-wrap gap-4 text-[11px] text-[#6b7770]"><span><i class="mr-1 inline-block h-2 w-2 rounded-[3px] bg-[#e8f5bd]"></i>Reserva paga</span><span><i class="mr-1 inline-block h-2 w-2 rounded-[3px] bg-[#fff0dc]"></i>Não pago</span><span><svg class="mr-1 inline-block h-3 w-3 align-[-2px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 3 21 7l-4 4"></path><path d="M21 7h-5a7 7 0 1 0 6.7 9"></path><path d="m7 21-4-4 4-4"></path><path d="M3 17h5a7 7 0 1 0-6.7-9"></path></svg>Recorrente</span></div>
+    <div class="mt-4 flex flex-wrap gap-4 text-[11px] text-[#7183A3]"><span><i class="mr-1 inline-block h-2 w-2 rounded-[3px] bg-[#E6EFFF]"></i>Reserva paga</span><span><i class="mr-1 inline-block h-2 w-2 rounded-[3px] bg-[#EEF4FF]"></i>Não pago</span><span><svg class="mr-1 inline-block h-3 w-3 align-[-2px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 3 21 7l-4 4"></path><path d="M21 7h-5a7 7 0 1 0 6.7 9"></path><path d="m7 21-4-4 4-4"></path><path d="M3 17h5a7 7 0 1 0-6.7-9"></path></svg>Recorrente</span></div>
 </section>

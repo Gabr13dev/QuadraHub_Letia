@@ -16,9 +16,9 @@ export class AppComponent {
   readonly defaultHourlyRate = 80;
   readonly hours = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
   courts: Court[] = [
-    { name: 'Arena 01', sports: ['Beach tennis', 'Futevôlei', 'Vôlei de praia'], hourlyRate: 80, color: '#ffb45c', active: true, open: '08:00', close: '22:00' },
-    { name: 'Arena 02', sports: ['Tênis'], hourlyRate: 90, color: '#90c8ff', active: true, open: '08:00', close: '22:00' },
-    { name: 'Arena 03', sports: ['Futebol society'], hourlyRate: 180, color: '#c7e85f', active: true, open: '07:00', close: '23:00' }
+    { name: 'Arena 01', sports: ['Beach tennis', 'Futevôlei', 'Vôlei de praia'], hourlyRate: 80, color: '#74A8FF', active: true, open: '08:00', close: '22:00' },
+    { name: 'Arena 02', sports: ['Tênis'], hourlyRate: 90, color: '#5B8DEF', active: true, open: '08:00', close: '22:00' },
+    { name: 'Arena 03', sports: ['Futebol society'], hourlyRate: 180, color: '#4E7DFF', active: true, open: '07:00', close: '23:00' }
   ];
   bookings: Booking[] = [
     { court: 0, start: 10, end: 12, name: 'João Pedro', paid: false, recurring: true },
@@ -72,7 +72,7 @@ export class AppComponent {
     const current = this.editingCourt >= 0 ? this.courts[this.editingCourt] : null;
     const sports = this.courtType.split(',').map((sport) => sport.trim()).filter(Boolean);
     if (!sports.length) return;
-    const data: Court = { name: this.courtName.trim(), sports, hourlyRate: Math.max(0, Number(this.courtHourlyRate) || this.defaultHourlyRate), color: current?.color ?? '#c9f25a', active: current?.active ?? true, open: this.courtOpen, close: this.courtClose };
+    const data: Court = { name: this.courtName.trim(), sports, hourlyRate: Math.max(0, Number(this.courtHourlyRate) || this.defaultHourlyRate), color: current?.color ?? '#0057FF', active: current?.active ?? true, open: this.courtOpen, close: this.courtClose };
     this.courts = this.editingCourt >= 0 ? this.courts.map((court, i) => i === this.editingCourt ? data : court) : [...this.courts, data];
     this.modal = null;
   }

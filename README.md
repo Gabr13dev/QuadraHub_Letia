@@ -1,4 +1,4 @@
-# QuadraHub
+# Letia Quadras
 
 Sistema web para operação de complexos esportivos, com foco em reservas de quadras, disponibilidade de horários e gestão de mensalistas.
 
