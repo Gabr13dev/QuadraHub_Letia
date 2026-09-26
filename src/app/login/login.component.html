@@ -1,0 +1,57 @@
+<main class="grid min-h-screen bg-[#F7F9FC] lg:grid-cols-2">
+  <section class="relative hidden overflow-hidden bg-[#0B1F3B] px-12 py-10 text-white lg:flex lg:flex-col">
+    <div class="relative z-10 flex items-center gap-3">
+      <span class="grid h-10 w-10 place-items-center rounded-xl bg-[#0057FF] text-base font-bold tracking-tight">Lt</span>
+      <span class="font-display text-2xl font-bold tracking-[-.7px]">Letia</span>
+    </div>
+    <div class="relative z-10 my-auto max-w-lg">
+      <span class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-[#BBD0F8]"><span class="h-1.5 w-1.5 rounded-full bg-[#4C91FF]"></span>GESTÃO DE ESPAÇOS ESPORTIVOS</span>
+      <h1 class="font-display text-5xl font-bold leading-[1.08] tracking-[-1.8px]">Sua operação,<br><span class="text-[#4C91FF]">em jogo.</span></h1>
+      <p class="mt-5 max-w-md text-base leading-7 text-[#BBD0F8]">Organize quadras, reservas e mensalistas em um só lugar. Mais clareza para sua equipe e mais tempo para o que importa.</p>
+      <div class="mt-12 rounded-2xl border border-white/10 bg-white/[0.06] p-5 shadow-2xl">
+        <div class="mb-4 flex items-center justify-between"><div><span class="block text-xs text-[#9EB5E2]">AGENDA DE HOJE</span><strong class="mt-1 block text-sm">Sua rotina, sob controle</strong></div><span class="rounded-full bg-[#0057FF]/20 px-2.5 py-1 text-xs text-[#8DB5FF]">Ao vivo</span></div>
+        <div class="grid grid-cols-[44px_1fr_1fr] gap-2 text-xs">
+          <span class="py-3 text-[#9EB5E2]">18:00</span><div class="rounded-lg border-l-2 border-[#4C91FF] bg-[#0057FF]/20 px-3 py-2"><span class="block font-semibold">Arena 01</span><span class="mt-0.5 block text-[#BBD0F8]">Beach tennis</span></div><div class="rounded-lg border-l-2 border-[#7CA8F8] bg-white/[0.06] px-3 py-2"><span class="block font-semibold">Arena 02</span><span class="mt-0.5 block text-[#BBD0F8]">Tênis</span></div>
+          <span class="py-3 text-[#9EB5E2]">19:00</span><div class="rounded-lg border-l-2 border-[#8DAAFF] bg-white/[0.06] px-3 py-2"><span class="block font-semibold">Arena 01</span><span class="mt-0.5 block text-[#BBD0F8]">Futevôlei</span></div><div class="rounded-lg border-l-2 border-[#4C91FF] bg-[#0057FF]/20 px-3 py-2"><span class="block font-semibold">Arena 03</span><span class="mt-0.5 block text-[#BBD0F8]">Society</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="relative z-10 flex items-center justify-between text-xs text-[#8199C5]"><span>© {{ year }} Letia</span><span>Quadras</span></div>
+    <div class="pointer-events-none absolute -bottom-40 -right-40 h-[480px] w-[480px] rounded-full border border-white/[0.06]"></div>
+    <div class="pointer-events-none absolute -bottom-24 -right-24 h-[320px] w-[320px] rounded-full border border-white/[0.08]"></div>
+  </section>
+
+  <section class="flex min-h-screen items-center justify-center px-5 py-10 sm:px-10">
+    <div class="w-full max-w-[420px]">
+      <div class="mb-10 flex items-center justify-center gap-2.5 lg:hidden">
+        <span class="grid h-9 w-9 place-items-center rounded-xl bg-[#0057FF] text-sm font-bold text-white">Lt</span>
+        <span class="font-display text-2xl font-bold tracking-[-.7px] text-[#0B1F3B]">Letia</span>
+      </div>
+      <div class="rounded-2xl border border-[#DDE6F3] bg-white p-6 shadow-[0_16px_50px_rgba(11,31,59,0.08)] sm:p-9">
+        <div class="mb-8">
+          <span class="text-xs font-semibold uppercase tracking-[.16em] text-[#0057FF]">Letia Quadras</span>
+          <h2 class="mt-2 font-display text-2xl font-bold tracking-[-.6px] text-[#0B1F3B]">Acesse sua conta</h2>
+          <p class="mt-2 text-sm leading-6 text-[#7183A3]">Entre para acompanhar a operação das suas quadras.</p>
+        </div>
+        <form class="space-y-5" (ngSubmit)="submit()">
+          <label class="block text-sm font-semibold text-[#0B1F3B]">Usuário
+            <input class="mt-2 block w-full rounded-xl border border-[#DDE6F3] bg-white px-3.5 py-3 text-sm font-normal text-[#0B1F3B] outline-none transition placeholder:text-[#9AA9C1] focus:border-[#0057FF] focus:ring-4 focus:ring-[#0057FF]/10" type="text" name="username" [(ngModel)]="username" autocomplete="username" placeholder="Seu usuário ou e-mail" required>
+          </label>
+          <label class="block text-sm font-semibold text-[#0B1F3B]">Senha
+            <span class="relative mt-2 block">
+              <input class="block w-full rounded-xl border border-[#DDE6F3] bg-white px-3.5 py-3 pr-16 text-sm font-normal text-[#0B1F3B] outline-none transition placeholder:text-[#9AA9C1] focus:border-[#0057FF] focus:ring-4 focus:ring-[#0057FF]/10" [type]="passwordVisible ? 'text' : 'password'" name="password" [(ngModel)]="password" autocomplete="current-password" placeholder="Digite sua senha" required>
+              <button class="absolute inset-y-0 right-3 border-0 bg-transparent text-xs font-semibold text-[#0057FF]" type="button" (click)="passwordVisible = !passwordVisible">{{ passwordVisible ? 'Ocultar' : 'Mostrar' }}</button>
+            </span>
+          </label>
+          <button class="w-full rounded-xl bg-[#0057FF] px-4 py-3 font-semibold text-white shadow-[0_5px_14px_rgba(0,87,255,0.2)] transition hover:bg-[#0049D8] focus:outline-none focus:ring-4 focus:ring-[#0057FF]/20" type="submit">Entrar</button>
+        </form>
+        <div class="my-6 flex items-center gap-3"><span class="h-px flex-1 bg-[#E6ECF5]"></span><span class="text-xs text-[#8B9BB5]">ou continue com</span><span class="h-px flex-1 bg-[#E6ECF5]"></span></div>
+        <button class="flex w-full items-center justify-center gap-3 rounded-xl border border-[#DDE6F3] bg-white px-4 py-3 text-sm font-semibold text-[#0B1F3B] transition hover:bg-[#F7F9FC]" type="button" (click)="signIn.emit()">
+          <svg class="h-5 w-5" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z" transform="translate(0 4)"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 38.06 46.98 31.84 46.98 24.55Z"></path><path fill="#FBBC05" d="M10.53 28.59a14.4 14.4 0 0 1 0-9.18l-7.98-6.19a23.9 23.9 0 0 0 0 21.56l7.98-6.19Z" transform="translate(0 4)"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.8l-7.73-6C30.03 37.91 27.2 39 24 39c-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 43.12 14.62 48 24 48Z" transform="translate(0 -2)"></path></svg>
+          Continuar com Google
+        </button>
+      </div>
+      <p class="mt-5 text-center text-xs leading-5 text-[#8B9BB5]">Acesso de demonstração: qualquer usuário e senha preenchidos, ou o botão Google, levam ao painel.</p>
+    </div>
+  </section>
+</main>

@@ -6,13 +6,15 @@ import { OverviewComponent } from './overview/overview.component';
 import { ReservationModalComponent } from './reservation-modal/reservation-modal.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { MonthlyComponent } from './monthly/monthly.component';
+import { LoginComponent } from './login/login.component';
 
 @Component({
   selector: 'app-root',
-  imports: [SidebarComponent, OverviewComponent, AgendaComponent, CourtsComponent, ReservationModalComponent, MonthlyComponent],
+  imports: [SidebarComponent, OverviewComponent, AgendaComponent, CourtsComponent, ReservationModalComponent, MonthlyComponent, LoginComponent],
   templateUrl: './app.component.html'
 })
 export class AppComponent {
+  isAuthenticated = false;
   readonly defaultHourlyRate = 80;
   readonly hours = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
   courts: Court[] = [
@@ -46,6 +48,7 @@ export class AppComponent {
   courtHourlyRate = this.defaultHourlyRate;
 
   navigate(view: AppView): void { this.view = view; }
+  signIn(): void { this.isAuthenticated = true; }
   openNewBooking(): void {
     const availableCourt = this.courts.findIndex((court, courtIndex) =>
       court.active && this.hours.some((_, hourIndex) =>
